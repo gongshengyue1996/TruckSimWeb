@@ -1,0 +1,6 @@
+{
+  "name": "Truck Sim Nav",
+  "description": "Official landing page for Truck Sim Nav — an iOS and iPadOS GPS navigation, 3D traffic awareness, and real-time telemetry companion app for Euro Truck Simulator 2.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
