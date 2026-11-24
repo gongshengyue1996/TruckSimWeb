@@ -4,17 +4,25 @@ import { Menu, X } from 'lucide-react';
 interface TopBarProps {
   onOpenDownload: () => void;
   onOpenDocs: () => void;
+  onNavigateHome: (sectionId?: string) => void;
 }
 
-export function TopBar({ onOpenDownload, onOpenDocs }: TopBarProps) {
+export function TopBar({ onOpenDownload, onOpenDocs, onNavigateHome }: TopBarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleNavClick = (sectionId?: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    onNavigateHome(sectionId);
+  };
 
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-[#DADCE0]">
       <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between gap-8">
         {/* Zone 1: Single text element wordmark */}
         <a
-          href="#"
+          href="/"
+          onClick={handleNavClick()}
           className="font-display text-lg font-bold tracking-tight text-[#1F1F1F] whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1A73E8] rounded"
         >
           Truck Sim Nav
@@ -23,19 +31,22 @@ export function TopBar({ onOpenDownload, onOpenDocs }: TopBarProps) {
         {/* Zone 2: 4 concise single-line nav links */}
         <nav aria-label="Primary navigation" className="hidden md:flex items-center gap-7 text-sm font-medium text-[#444746]">
           <a
-            href="#capabilities"
+            href="/#capabilities"
+            onClick={handleNavClick('capabilities')}
             className="hover:text-[#1A73E8] transition-colors duration-150 whitespace-nowrap shrink-0 py-1 border-b-2 border-transparent hover:border-[#1A73E8] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1A73E8]"
           >
             Capabilities
           </a>
           <a
-            href="#interactive-demo"
+            href="/#interactive-demo"
+            onClick={handleNavClick('interactive-demo')}
             className="hover:text-[#1A73E8] transition-colors duration-150 whitespace-nowrap shrink-0 py-1 border-b-2 border-transparent hover:border-[#1A73E8] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1A73E8]"
           >
             Cockpit Preview
           </a>
           <a
-            href="#specifications"
+            href="/#specifications"
+            onClick={handleNavClick('specifications')}
             className="hover:text-[#1A73E8] transition-colors duration-150 whitespace-nowrap shrink-0 py-1 border-b-2 border-transparent hover:border-[#1A73E8] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1A73E8]"
           >
             Specifications
@@ -74,22 +85,22 @@ export function TopBar({ onOpenDownload, onOpenDocs }: TopBarProps) {
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-[#DADCE0] bg-white px-6 py-4 space-y-2">
           <a
-            href="#capabilities"
-            onClick={() => setMobileMenuOpen(false)}
+            href="/#capabilities"
+            onClick={handleNavClick('capabilities')}
             className="block py-2.5 text-sm font-medium text-[#1F1F1F] hover:text-[#1A73E8]"
           >
             Capabilities
           </a>
           <a
-            href="#interactive-demo"
-            onClick={() => setMobileMenuOpen(false)}
+            href="/#interactive-demo"
+            onClick={handleNavClick('interactive-demo')}
             className="block py-2.5 text-sm font-medium text-[#1F1F1F] hover:text-[#1A73E8]"
           >
             Cockpit Preview
           </a>
           <a
-            href="#specifications"
-            onClick={() => setMobileMenuOpen(false)}
+            href="/#specifications"
+            onClick={handleNavClick('specifications')}
             className="block py-2.5 text-sm font-medium text-[#1F1F1F] hover:text-[#1A73E8]"
           >
             Specifications
