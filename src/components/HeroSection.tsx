@@ -1,5 +1,9 @@
-import { ArrowRight, BookOpen, Download } from 'lucide-react';
+import { ArrowRight, BookOpen, Download, Monitor } from 'lucide-react';
 import { ResilientImage } from './ResilientImage';
+import {
+  DESKTOP_SERVER_DOWNLOAD_URL,
+  DESKTOP_SERVER_VERSION,
+} from '../constants/downloads';
 
 interface HeroSectionProps {
   onOpenDownload: () => void;
@@ -25,7 +29,7 @@ const KEY_SPECS = [
   {
     value: 'iOS & iPadOS',
     label: 'Native Apple Client',
-    detail: 'Optimized for iPhone and iPad',
+    detail: 'Requires Windows Desktop Server',
   },
 ];
 
@@ -40,9 +44,9 @@ export function HeroSection({ onOpenDownload, onOpenDocs }: HeroSectionProps) {
               <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-[#5F6368] mb-5">
                 <span className="text-[#1A73E8]">Euro Truck Simulator 2 Companion</span>
                 <span aria-hidden="true">·</span>
-                <span>iPhone &amp; iPad</span>
+                <span>iPhone &amp; iPad (iOS Only)</span>
                 <span aria-hidden="true">·</span>
-                <span>Currently iOS Only</span>
+                <span>Windows Desktop Server</span>
               </div>
 
               <h1 className="font-display text-[clamp(2.25rem,4vw,3.35rem)] font-bold tracking-tight leading-[1.12] text-[#1F1F1F] [text-wrap:balance]">
@@ -50,7 +54,7 @@ export function HeroSection({ onOpenDownload, onOpenDocs }: HeroSectionProps) {
               </h1>
 
               <p className="mt-5 text-base sm:text-[17px] leading-relaxed text-[#444746] max-w-xl">
-                Truck Sim Nav turns your iPhone or iPad into a dedicated commercial navigation unit for Euro Truck Simulator 2. Monitor real-time speed, fuel range, and remaining distance alongside live traffic light countdowns, 3D AI vehicle awareness, lane-level routing, and multilingual voice guidance.
+                Truck Sim Nav turns your iPhone or iPad into a dedicated commercial navigation unit for Euro Truck Simulator 2. Pair the iOS app with our free Windows Desktop Server to stream real-time speed, fuel range, traffic light countdowns, 3D AI vehicle awareness, lane-level routing, and multilingual voice guidance over local Wi-Fi.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3.5">
@@ -63,22 +67,35 @@ export function HeroSection({ onOpenDownload, onOpenDocs }: HeroSectionProps) {
                   Download for iOS
                 </button>
 
+                <a
+                  href={DESKTOP_SERVER_DOWNLOAD_URL}
+                  download
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-medium text-[#1A73E8] bg-white hover:bg-[#F1F3F4] border border-[#DADCE0] rounded-lg transition-colors duration-150 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1A73E8]"
+                >
+                  <Monitor className="w-4 h-4" aria-hidden="true" />
+                  Download PC Server ({DESKTOP_SERVER_VERSION})
+                </a>
+              </div>
+
+              <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-[#5F6368]">
                 <button
                   type="button"
                   onClick={onOpenDocs}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-[#1A73E8] bg-white hover:bg-[#F1F3F4] border border-[#DADCE0] rounded-lg transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1A73E8]"
+                  className="inline-flex items-center gap-1.5 font-medium text-[#444746] hover:text-[#1A73E8] transition-colors cursor-pointer whitespace-nowrap shrink-0"
                 >
-                  <BookOpen className="w-4 h-4" aria-hidden="true" />
-                  Setup &amp; Documentation
+                  <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />
+                  Read Setup &amp; Server Guide
                 </button>
+                <span aria-hidden="true">·</span>
+                <span>Required: Install Truck Sim Nav Server on your Windows gaming PC</span>
               </div>
             </div>
 
             <div className="mt-10 pt-6 border-t border-[#DADCE0] flex flex-wrap items-center justify-between gap-4 text-xs text-[#5F6368]">
               <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-                <span>Requires iOS 16.0 or iPadOS 16.0+</span>
+                <span>iOS 16.0 / iPadOS 16.0+</span>
                 <span aria-hidden="true">·</span>
-                <span>Light &amp; Dark Cockpit Modes</span>
+                <span>Windows 10/11 64-bit Server</span>
                 <span aria-hidden="true">·</span>
                 <span>Zero Cloud Account Required</span>
               </div>

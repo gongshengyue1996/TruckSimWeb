@@ -1,4 +1,9 @@
-import { BookOpen, ArrowUpRight } from 'lucide-react';
+import { BookOpen, Download } from 'lucide-react';
+import {
+  DESKTOP_SERVER_DOWNLOAD_URL,
+  DESKTOP_SERVER_FILENAME,
+  DESKTOP_SERVER_VERSION,
+} from '../constants/downloads';
 
 interface SpecsAndSetupSectionProps {
   onOpenDocs: (tab?: string) => void;
@@ -8,28 +13,32 @@ interface SpecsAndSetupSectionProps {
 const SETUP_STEPS = [
   {
     number: '01',
-    title: 'Install the ETS2 Telemetry Bridge on PC',
+    title: 'Install Truck Sim Nav Server on Your Windows PC',
     description:
-      'Copy the lightweight telemetry DLL into your Euro Truck Simulator 2 plugins directory and launch the companion broadcaster.',
+      'Download and run TruckSimNavServer-Setup-v1.0.0.exe on the PC where Euro Truck Simulator 2 is installed. The setup wizard configures the ETS2 telemetry plugin and installs the local desktop server automatically.',
   },
   {
     number: '02',
-    title: 'Connect iPhone or iPad on Local Wi-Fi',
+    title: 'Launch the Desktop Server & ETS2 Together',
     description:
-      'Open Truck Sim Nav on your iOS device. Automatic Bonjour discovery pairs with your PC over your local network in seconds—or enter your LAN IP manually.',
+      'Start Truck Sim Nav Server on your PC (it runs quietly in the background), launch Euro Truck Simulator 2, and approve the standard SDK telemetry prompt.',
   },
   {
     number: '03',
-    title: 'Select Language, Theme, and Drive',
+    title: 'Connect iPhone or iPad Over Local Wi-Fi',
     description:
-      'Mount your iPad or iPhone beside your wheel, choose your preferred voice language and Light or Dark mode, and start hauling with real-time 3D guidance.',
+      'Open Truck Sim Nav on your iOS device connected to the same Wi-Fi network. It discovers your PC automatically—choose your voice language and Light or Dark mode, and start driving.',
   },
 ];
 
 const SPEC_ROWS = [
   {
-    category: 'Platform Availability',
+    category: 'Mobile Client Platform',
     detail: 'iOS 16.0+ (iPhone) and iPadOS 16.0+ (iPad) — Currently iOS exclusive',
+  },
+  {
+    category: 'Desktop Server (Required)',
+    detail: `Truck Sim Nav Server ${DESKTOP_SERVER_VERSION} for Windows 10 / 11 (64-bit) — ${DESKTOP_SERVER_FILENAME}`,
   },
   {
     category: 'Simulator Support',
@@ -65,7 +74,7 @@ const SPEC_ROWS = [
   },
 ];
 
-export function SpecsAndSetupSection({ onOpenDocs, onOpenDownload }: SpecsAndSetupSectionProps) {
+export function SpecsAndSetupSection({ onOpenDocs }: SpecsAndSetupSectionProps) {
   return (
     <section id="specifications" className="py-20 bg-white">
       <div className="max-w-[1200px] mx-auto px-6">
@@ -76,10 +85,10 @@ export function SpecsAndSetupSection({ onOpenDocs, onOpenDownload }: SpecsAndSet
               03. Deployment &amp; Specifications
             </p>
             <h2 className="font-display text-3xl font-semibold tracking-tight text-[#1F1F1F] [text-wrap:balance]">
-              Ready on your desk in under three minutes
+              Two-part local setup ready in under three minutes
             </h2>
             <p className="text-[#444746] mt-3 text-base leading-relaxed">
-              Truck Sim Nav communicates directly with Euro Truck Simulator 2 over your home network with no subscription, no account registration, and minimal CPU overhead.
+              Truck Sim Nav uses a lightweight Windows Desktop Server on your gaming PC to stream live telemetry directly to your iPhone or iPad over local Wi-Fi—with no cloud servers, no account sign-in, and minimal CPU overhead.
             </p>
 
             <ol className="mt-8 space-y-6">
@@ -101,6 +110,14 @@ export function SpecsAndSetupSection({ onOpenDocs, onOpenDownload }: SpecsAndSet
             </ol>
 
             <div className="mt-8 pt-6 border-t border-[#DADCE0] flex flex-wrap items-center gap-3">
+              <a
+                href={DESKTOP_SERVER_DOWNLOAD_URL}
+                download
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-[#1A73E8] hover:bg-[#0B57D0] rounded-lg transition-colors duration-150 whitespace-nowrap shrink-0"
+              >
+                <Download className="w-4 h-4" aria-hidden="true" />
+                Download PC Server ({DESKTOP_SERVER_VERSION})
+              </a>
               <button
                 type="button"
                 onClick={() => onOpenDocs('setup')}
@@ -108,14 +125,6 @@ export function SpecsAndSetupSection({ onOpenDocs, onOpenDownload }: SpecsAndSet
               >
                 <BookOpen className="w-4 h-4" aria-hidden="true" />
                 Open Full Setup Manual
-              </button>
-              <button
-                type="button"
-                onClick={onOpenDownload}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-[#444746] hover:text-[#1F1F1F] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-              >
-                Get PC Bridge Plugin
-                <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
           </div>

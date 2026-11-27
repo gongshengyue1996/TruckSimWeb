@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Check, Copy, X } from 'lucide-react';
+import { Check, Copy, Download, X } from 'lucide-react';
+import {
+  DESKTOP_SERVER_DOWNLOAD_URL,
+  DESKTOP_SERVER_FILENAME,
+  DESKTOP_SERVER_VERSION,
+} from '../constants/downloads';
 
 interface DocumentationModalProps {
   open: boolean;
@@ -20,13 +25,13 @@ const DOC_TABS: DocTab[] = [
     id: 'overview',
     label: 'Overview',
     title: 'Product Overview & System Requirements',
-    summary: 'Core architecture, supported Euro Truck Simulator 2 versions, and iOS hardware recommendations.',
+    summary: 'Core architecture, supported Euro Truck Simulator 2 versions, Desktop Server requirement, and iOS hardware recommendations.',
   },
   {
     id: 'setup',
-    label: 'PC Bridge Setup',
-    title: 'PC Telemetry Bridge & Wi-Fi Pairing',
-    summary: 'Step-by-step instructions to install the 64-bit ETS2 SDK telemetry plugin and pair your iPhone or iPad.',
+    label: 'Desktop Server Setup',
+    title: 'Windows Desktop Server & Wi-Fi Pairing',
+    summary: 'Step-by-step instructions to install Truck Sim Nav Server on your gaming PC and pair your iPhone or iPad.',
   },
   {
     id: 'perception',
@@ -50,15 +55,12 @@ const DOC_TABS: DocTab[] = [
     id: 'faq',
     label: 'Troubleshooting',
     title: 'Connection Troubleshooting & FAQ',
-    summary: 'Resolving Windows Firewall blocks, subnet mismatches, and telemetry SDK confirmation dialogs.',
+    summary: 'Resolving local Wi-Fi pairing issues, desktop server status, and telemetry SDK confirmation dialogs.',
   },
 ];
 
 const PLUGIN_PATH =
   'C:\\Program Files (x86)\\Steam\\steamapps\\common\\Euro Truck Simulator 2\\bin\\win_x64\\plugins\\';
-
-const FIREWALL_CMD =
-  'netsh advfirewall firewall add rule name="Truck Sim Nav Bridge" dir=in action=allow protocol=TCP localport=25555';
 
 export function DocumentationModal({
   open,
@@ -167,7 +169,7 @@ export function DocumentationModal({
             {activeTab === 'overview' && (
               <div className="mt-6 space-y-5 text-sm text-[#444746] leading-relaxed">
                 <p>
-                  Truck Sim Nav offloads navigation, vehicle instrumentation, and traffic perception from your primary Euro Truck Simulator 2 screen onto your iPhone or iPad. Because all data travels strictly across your local area network, there is no cloud delay and zero ongoing subscription cost.
+                  Truck Sim Nav offloads navigation, vehicle instrumentation, and traffic perception from your primary Euro Truck Simulator 2 screen onto your iPhone or iPad. Because the companion Windows Desktop Server streams data strictly across your local area network, there is no cloud delay and zero ongoing subscription cost.
                 </p>
 
                 <div className="rounded-xl border border-[#DADCE0] bg-[#F8F9FA] p-5">
@@ -179,7 +181,7 @@ export function DocumentationModal({
                       <strong>iOS Device:</strong> iPhone or iPad running iOS 16.0 / iPadOS 16.0 or newer (Apple A12 Bionic or newer recommended for 60 Hz 3D rendering).
                     </li>
                     <li>
-                      <strong>Simulation PC:</strong> Windows 10 or Windows 11 (64-bit) running Euro Truck Simulator 2 v1.48+.
+                      <strong>Desktop Server (Required):</strong> Truck Sim Nav Server ({DESKTOP_SERVER_VERSION}) installed on your Windows 10 or Windows 11 (64-bit) gaming PC alongside Euro Truck Simulator 2 v1.48+.
                     </li>
                     <li>
                       <strong>Network:</strong> Local Wi-Fi router connecting both the gaming PC (Ethernet or Wi-Fi) and the iOS device on the same subnet.
@@ -193,12 +195,33 @@ export function DocumentationModal({
               <div className="mt-6 space-y-6 text-sm text-[#444746] leading-relaxed">
                 <div>
                   <h4 className="font-display text-sm font-semibold text-[#1F1F1F]">
-                    1. Copy the Telemetry DLL to ETS2 Plugins
+                    1. Download &amp; Install Truck Sim Nav Server on Windows
                   </h4>
                   <p className="mt-1.5">
-                    Extract the Windows Telemetry Bridge archive and copy <code className="font-mono text-xs bg-[#F1F3F4] px-1.5 py-0.5 rounded text-[#1F1F1F]">TruckSimNavBridge.dll</code> into your game&apos;s 64-bit plugins folder (create the <code className="font-mono text-xs bg-[#F1F3F4] px-1.5 py-0.5 rounded text-[#1F1F1F]">plugins</code> directory if it does not already exist):
+                    Download and run the official Windows installer on your ETS2 gaming PC. The setup wizard installs the desktop server application and automatically configures the 64-bit Euro Truck Simulator 2 telemetry plugin.
                   </p>
-                  <div className="mt-2.5 rounded-lg border border-[#DADCE0] bg-[#F8F9FA] p-3 flex items-center justify-between gap-3">
+                  <div className="mt-3 rounded-xl border border-[#DADCE0] bg-[#F8F9FA] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <div className="font-mono text-xs font-semibold text-[#1F1F1F]">
+                        {DESKTOP_SERVER_FILENAME}
+                      </div>
+                      <div className="text-xs text-[#5F6368] mt-0.5">
+                        Windows 10 / 11 (64-bit) · Version {DESKTOP_SERVER_VERSION}
+                      </div>
+                    </div>
+                    <a
+                      href={DESKTOP_SERVER_DOWNLOAD_URL}
+                      download
+                      className="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-medium text-white bg-[#1A73E8] hover:bg-[#0B57D0] rounded-lg transition-colors whitespace-nowrap shrink-0"
+                    >
+                      <Download className="w-3.5 h-3.5" aria-hidden="true" />
+                      Download Installer
+                    </a>
+                  </div>
+                  <p className="mt-2.5 text-xs text-[#5F6368]">
+                    For custom Steam library locations, verify that the plugin DLL is installed inside your game&apos;s 64-bit plugins directory:
+                  </p>
+                  <div className="mt-2 rounded-lg border border-[#DADCE0] bg-[#F8F9FA] p-3 flex items-center justify-between gap-3">
                     <code className="font-mono text-xs text-[#1F1F1F] break-all">{PLUGIN_PATH}</code>
                     <button
                       type="button"
@@ -223,40 +246,10 @@ export function DocumentationModal({
 
                 <div>
                   <h4 className="font-display text-sm font-semibold text-[#1F1F1F]">
-                    2. Authorize Local Port in Windows Firewall
+                    2. Keep the Server Running, Launch ETS2 &amp; Pair on iOS
                   </h4>
                   <p className="mt-1.5">
-                    If Windows Defender Firewall blocks incoming local discovery, run this command in an elevated PowerShell or Command Prompt window:
-                  </p>
-                  <div className="mt-2.5 rounded-lg border border-[#DADCE0] bg-[#F8F9FA] p-3 flex items-center justify-between gap-3">
-                    <code className="font-mono text-xs text-[#1F1F1F] break-all">{FIREWALL_CMD}</code>
-                    <button
-                      type="button"
-                      onClick={() => handleCopy('fw', FIREWALL_CMD)}
-                      aria-label="Copy firewall command"
-                      className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium bg-white border border-[#DADCE0] rounded-md text-[#1F1F1F] hover:bg-[#F1F3F4] shrink-0 cursor-pointer"
-                    >
-                      {copiedId === 'fw' ? (
-                        <>
-                          <Check className="w-3.5 h-3.5 text-[#0D652D]" />
-                          Copied
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3.5 h-3.5" />
-                          Copy
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="font-display text-sm font-semibold text-[#1F1F1F]">
-                    3. Launch ETS2 and Pair on iOS
-                  </h4>
-                  <p className="mt-1.5">
-                    Start Euro Truck Simulator 2 and click <strong>OK</strong> on the standard &ldquo;Request to use advanced SDK features&rdquo; prompt. Open Truck Sim Nav on your iPhone or iPad—your PC will appear automatically under <em>Nearby Simulators</em>.
+                    Keep <strong>Truck Sim Nav Server</strong> running on your PC, start Euro Truck Simulator 2, and click <strong>OK</strong> on the standard &ldquo;Request to use advanced SDK features&rdquo; prompt. Open Truck Sim Nav on your iPhone or iPad—your PC will appear automatically under <em>Nearby Simulators</em> with no manual firewall configuration needed.
                   </p>
                 </div>
               </div>
@@ -338,7 +331,7 @@ export function DocumentationModal({
                     Why does the app show &ldquo;Waiting for Simulator&rdquo;?
                   </h4>
                   <p className="text-xs mt-1.5 leading-relaxed">
-                    Verify that both your Windows PC and iOS device are on the same local Wi-Fi network (not a guest VLAN), that you clicked OK on the ETS2 SDK prompt at startup, and that TCP/UDP port 25555 is allowed through Windows Firewall.
+                    Verify that <strong>Truck Sim Nav Server</strong> is running on your Windows PC, both devices are connected to the same local Wi-Fi network (not a guest VLAN), and you clicked OK on the ETS2 SDK prompt at startup.
                   </p>
                 </div>
                 <div className="pb-4 border-b border-[#DADCE0]">

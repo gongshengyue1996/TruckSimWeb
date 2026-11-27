@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Check, Download, ExternalLink, Laptop, Smartphone, X } from 'lucide-react';
+import { Download, ExternalLink, Laptop, Smartphone, X } from 'lucide-react';
+import {
+  DESKTOP_SERVER_DOWNLOAD_URL,
+  DESKTOP_SERVER_FILENAME,
+  DESKTOP_SERVER_VERSION,
+} from '../constants/downloads';
 
 interface DownloadModalProps {
   open: boolean;
@@ -8,7 +13,6 @@ interface DownloadModalProps {
 }
 
 export function DownloadModal({ open, onClose, onOpenDocs }: DownloadModalProps) {
-  const [bridgeDownloaded, setBridgeDownloaded] = useState(false);
   const [appStoreClicked, setAppStoreClicked] = useState(false);
 
   useEffect(() => {
@@ -21,33 +25,6 @@ export function DownloadModal({ open, onClose, onOpenDocs }: DownloadModalProps)
   }, [open, onClose]);
 
   if (!open) return null;
-
-  const handleDownloadBridgeGuide = () => {
-    const content = [
-      'Truck Sim Nav — PC Telemetry Bridge Setup Package',
-      '================================================',
-      '',
-      '1. Supported Simulator: Euro Truck Simulator 2 (64-bit Windows, v1.48+)',
-      '2. Plugin Directory:',
-      '   C:\\Program Files (x86)\\Steam\\steamapps\\common\\Euro Truck Simulator 2\\bin\\win_x64\\plugins\\',
-      '3. Default Local Network Port: UDP/WS 25555',
-      '4. Ensure your Windows PC and iPhone/iPad are connected to the same Wi-Fi network.',
-      '5. Launch ETS2, accept the SDK Telemetry prompt, and open Truck Sim Nav on iOS.',
-      '',
-      'Note: Replace this starter configuration readme with your compiled telemetry DLL installer.',
-    ].join('\n');
-
-    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'TruckSimNav-PC-Bridge-Setup.txt';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    setBridgeDownloaded(true);
-  };
 
   return (
     <div
@@ -67,7 +44,7 @@ export function DownloadModal({ open, onClose, onOpenDocs }: DownloadModalProps)
               Download Truck Sim Nav
             </h2>
             <p className="text-xs text-[#5F6368] mt-0.5">
-              iOS &amp; iPadOS Client · Windows Telemetry Bridge for Euro Truck Simulator 2
+              iOS &amp; iPadOS Client · Required Windows Desktop Server for Euro Truck Simulator 2
             </p>
           </div>
           <button
@@ -82,9 +59,9 @@ export function DownloadModal({ open, onClose, onOpenDocs }: DownloadModalProps)
 
         {/* Modal Body */}
         <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
-          {/* Platform Notice */}
+          {/* Platform & Architecture Notice */}
           <div className="rounded-xl bg-[#E8F0FE] border border-[#D3E3FD] px-4 py-3 text-xs text-[#0B57D0] leading-relaxed">
-            <strong>Platform Availability:</strong> Truck Sim Nav is currently released exclusively for <strong>iPhone (iOS 16.0+)</strong> and <strong>iPad (iPadOS 16.0+)</strong>. Android is not supported at this time.
+            <strong>Both Components Required:</strong> Install the <strong>iOS App</strong> on your iPhone/iPad (iOS 16.0+, currently iOS only) and install the free <strong>Windows Desktop Server</strong> on your ETS2 gaming PC so both devices can stream telemetry over local Wi-Fi.
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
@@ -135,7 +112,6 @@ export function DownloadModal({ open, onClose, onOpenDocs }: DownloadModalProps)
             {/* Scannable QR Card */}
             <div className="md:col-span-5 rounded-xl border border-[#DADCE0] bg-[#F8F9FA] p-5 flex flex-col items-center justify-center text-center">
               <div className="p-3 bg-white border border-[#DADCE0] rounded-xl">
-                {/* Clean Geometric Placeholder QR Code SVG */}
                 <svg
                   width="124"
                   height="124"
@@ -144,19 +120,15 @@ export function DownloadModal({ open, onClose, onOpenDocs }: DownloadModalProps)
                   className="text-[#1F1F1F]"
                 >
                   <rect width="29" height="29" fill="#FFFFFF" />
-                  {/* Top-left finder */}
                   <rect x="1" y="1" width="7" height="7" fill="currentColor" />
                   <rect x="2" y="2" width="5" height="5" fill="#FFFFFF" />
                   <rect x="3" y="3" width="3" height="3" fill="currentColor" />
-                  {/* Top-right finder */}
                   <rect x="21" y="1" width="7" height="7" fill="currentColor" />
                   <rect x="22" y="2" width="5" height="5" fill="#FFFFFF" />
                   <rect x="23" y="3" width="3" height="3" fill="currentColor" />
-                  {/* Bottom-left finder */}
                   <rect x="1" y="21" width="7" height="7" fill="currentColor" />
                   <rect x="2" y="22" width="5" height="5" fill="#FFFFFF" />
                   <rect x="3" y="23" width="3" height="3" fill="currentColor" />
-                  {/* Data modules */}
                   <rect x="10" y="2" width="2" height="2" fill="currentColor" />
                   <rect x="14" y="1" width="2" height="4" fill="currentColor" />
                   <rect x="17" y="3" width="2" height="2" fill="currentColor" />
@@ -190,40 +162,38 @@ export function DownloadModal({ open, onClose, onOpenDocs }: DownloadModalProps)
             </div>
           </div>
 
-          {/* Step 2: PC Telemetry Bridge */}
-          <div className="rounded-xl border border-[#DADCE0] bg-[#F8F9FA] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2 text-sm font-semibold text-[#1F1F1F]">
-                <Laptop className="w-4 h-4 text-[#1A73E8]" aria-hidden="true" />
-                Step 2. Download Windows PC Telemetry Bridge
+          {/* Step 2: Windows Desktop Server */}
+          <div className="rounded-xl border border-[#DADCE0] bg-[#F8F9FA] p-5 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 text-sm font-semibold text-[#1F1F1F]">
+                  <Laptop className="w-4 h-4 text-[#1A73E8]" aria-hidden="true" />
+                  Step 2. Install Desktop Server on Windows PC (Required)
+                </div>
+                <p className="text-xs text-[#444746] mt-1.5 leading-relaxed">
+                  Run this installer on your Euro Truck Simulator 2 PC to stream live GPS coordinates, AI traffic positions, traffic signal phases, and vehicle telemetry to your iOS device over local Wi-Fi.
+                </p>
               </div>
-              <p className="text-xs text-[#444746] mt-1 leading-relaxed">
-                Required on your ETS2 gaming PC to stream GPS coordinates, AI traffic positions, traffic light phases, and telemetry over local Wi-Fi.
-              </p>
+              <a
+                href={DESKTOP_SERVER_DOWNLOAD_URL}
+                download
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-medium text-white bg-[#1F1F1F] hover:bg-[#3C4043] rounded-lg transition-colors whitespace-nowrap shrink-0"
+              >
+                <Download className="w-4 h-4" aria-hidden="true" />
+                Download Server ({DESKTOP_SERVER_VERSION})
+              </a>
             </div>
-            <button
-              type="button"
-              onClick={handleDownloadBridgeGuide}
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-medium text-[#1F1F1F] bg-white hover:bg-[#F1F3F4] border border-[#DADCE0] rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              {bridgeDownloaded ? (
-                <>
-                  <Check className="w-4 h-4 text-[#0D652D]" aria-hidden="true" />
-                  Setup File Saved
-                </>
-              ) : (
-                <>
-                  <Download className="w-4 h-4" aria-hidden="true" />
-                  Download PC Bridge
-                </>
-              )}
-            </button>
+
+            <div className="pt-3 border-t border-[#DADCE0] flex flex-wrap items-center justify-between gap-2 text-[11px] text-[#5F6368]">
+              <span className="font-mono text-[#1F1F1F]">{DESKTOP_SERVER_FILENAME}</span>
+              <span>Windows 10 / 11 (64-bit) · Ready to run after installation</span>
+            </div>
           </div>
         </div>
 
         {/* Footer Action */}
         <div className="px-6 py-4 bg-[#F8F9FA] border-t border-[#DADCE0] flex items-center justify-between text-xs">
-          <span className="text-[#5F6368]">Need installation instructions?</span>
+          <span className="text-[#5F6368]">Need step-by-step installation instructions?</span>
           <button
             type="button"
             onClick={() => {
@@ -232,7 +202,7 @@ export function DownloadModal({ open, onClose, onOpenDocs }: DownloadModalProps)
             }}
             className="font-medium text-[#1A73E8] hover:text-[#0B57D0] cursor-pointer"
           >
-            Open Setup Documentation
+            Open Desktop Server Setup Guide
           </button>
         </div>
       </div>

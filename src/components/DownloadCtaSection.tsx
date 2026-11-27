@@ -1,5 +1,10 @@
 import { useState, type FormEvent } from 'react';
-import { BookOpen, CheckCircle2, Download } from 'lucide-react';
+import { BookOpen, CheckCircle2, Download, Monitor } from 'lucide-react';
+import {
+  DESKTOP_SERVER_DOWNLOAD_URL,
+  DESKTOP_SERVER_FILENAME,
+  DESKTOP_SERVER_VERSION,
+} from '../constants/downloads';
 
 interface DownloadCtaSectionProps {
   onOpenDownload: () => void;
@@ -28,16 +33,16 @@ export function DownloadCtaSection({ onOpenDownload, onOpenDocs }: DownloadCtaSe
     <section className="py-20 bg-[#F8F9FA] border-t border-[#DADCE0]">
       <div className="max-w-[1200px] mx-auto px-6">
         <div className="rounded-2xl border border-[#DADCE0] bg-white p-8 sm:p-12 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          {/* Primary iOS Download Block */}
+          {/* Primary iOS + Windows Desktop Server Download Block */}
           <div className="lg:col-span-7">
             <p className="text-sm font-medium text-[#1A73E8] mb-2">
-              Available Now for iPhone &amp; iPad
+              iOS App + Free Windows Desktop Server
             </p>
             <h2 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-[#1F1F1F] [text-wrap:balance]">
               Upgrade your Euro Truck Simulator 2 cockpit today
             </h2>
             <p className="text-[#444746] mt-3 text-base leading-relaxed max-w-xl">
-              Download Truck Sim Nav from the Apple App Store and pair it with the free Windows telemetry bridge. Enjoy 3D lane guidance, live traffic light countdowns, full telemetry, and multilingual voice prompts on your iOS device.
+              Install Truck Sim Nav on your iPhone or iPad and run our free Windows Desktop Server on your gaming PC to enable 3D lane guidance, live traffic light countdowns, full telemetry, and multilingual voice prompts.
             </p>
 
             <div className="mt-7 flex flex-wrap items-center gap-3.5">
@@ -50,13 +55,26 @@ export function DownloadCtaSection({ onOpenDownload, onOpenDocs }: DownloadCtaSe
                 Download for iOS
               </button>
 
+              <a
+                href={DESKTOP_SERVER_DOWNLOAD_URL}
+                download
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-medium text-[#1A73E8] bg-white hover:bg-[#F1F3F4] border border-[#DADCE0] rounded-lg transition-colors duration-150 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1A73E8]"
+              >
+                <Monitor className="w-4 h-4" aria-hidden="true" />
+                Download PC Server ({DESKTOP_SERVER_VERSION})
+              </a>
+            </div>
+
+            <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[#5F6368]">
+              <span className="font-mono text-[#444746]">{DESKTOP_SERVER_FILENAME}</span>
+              <span aria-hidden="true">·</span>
               <button
                 type="button"
                 onClick={onOpenDocs}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-[#1A73E8] bg-white hover:bg-[#F1F3F4] border border-[#DADCE0] rounded-lg transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1A73E8]"
+                className="inline-flex items-center gap-1 font-medium text-[#1A73E8] hover:text-[#0B57D0] cursor-pointer"
               >
-                <BookOpen className="w-4 h-4" aria-hidden="true" />
-                Read Documentation
+                <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />
+                Read Installation Guide
               </button>
             </div>
           </div>
